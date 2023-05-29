@@ -20,9 +20,6 @@ Item {
         "cfOt",";f]d","dªn​","a'w​","lalx​","z'qm​","zlg​"
     ]
 
-    property var calendarMonths : [
-        "a}zv​","h]7​","c;/​",">fjg","ebf}","c;f]h","slt{s​","dlª\;/​","k';​","df3","kmn\\u'g​","r}q​"
-    ]
 
 
     Column{
@@ -50,13 +47,6 @@ Item {
 
                         MouseArea{
                             anchors.fill:parent
-                            onClicked: {
-                                if(monthCounter>0){
-                                    monthCounter--;
-                                }else{
-                                    monthCounter = 11;
-                                }
-                            }
                         }
                     }
                 }
@@ -88,13 +78,7 @@ Item {
 
                         MouseArea{
                             anchors.fill:parent
-                            onClicked: {
-                                if(monthCounter<11){
-                                    monthCounter++;
-                                }else{
-                                    monthCounter = 0;
-                                }
-                            }
+
                         }
                     }
                 }
@@ -131,7 +115,7 @@ Item {
             height:root.height
             cellWidth: root.width/7
             cellHeight: root.width/7
-            model: 32
+            model: 35
             delegate: Rectangle{
                 id: dateBox
                 width: calendarGrid.cellWidth
