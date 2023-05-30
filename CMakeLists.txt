@@ -15,7 +15,7 @@ qt_add_executable(appNepaliCalendar
 qt_add_qml_module(appNepaliCalendar
     URI NepaliCalendar
     VERSION 1.0
-    QML_FILES Main.qml CalendarTemplate.qml
+    QML_FILES Main.qml CalendarTemplate.qml EventsTemplate.qml
 )
 
 set_target_properties(appNepaliCalendar PROPERTIES

@@ -10,8 +10,8 @@ ApplicationWindow {
     ]
 
     id:root
-    width: 800
-    height: 700
+    width: 500
+    height: 900
     visible: true
     title: qsTr("Nepali Calendar")
 
@@ -26,44 +26,16 @@ ApplicationWindow {
                 console.log(currentIndex," from visible");
             }
             onWindowChanged: {
-                console.log("test from x");
             }
-
-
-//            onCurrentIndexChanged: {
-
-//                console.log(currentIndex);
-//                if (currentIndex === count - 1) {
-//                               swipeView.currentIndex = 0; // Wrap to the first item
-//                           } else if (currentIndex === 0) {
-//                               swipeView.currentIndex = count - 1; // Wrap to the last item
-//                           }
-//            }
 
             Repeater{
                 model: 12
-                delegate: CalendarTemplate{
+                delegate:
+                    CalendarTemplate{
                     currentMonth: calendarMonths[index]
                 }
             }
 
         }
-
-//        PageIndicator {
-//            count: view.count
-//            currentIndex: {
-//                var currentIndex =  view.currentIndex
-//                if(currentIndex===count-1)	{
-//                    view.currentIndex = 0;
-//                }else if(currentIndex===0){
-//                    view.currentIndex = count-1;
-//                }
-
-//                return currentIndex
-//            }
-//            anchors.top: root.bottom
-//            anchors.horizontalCenter: root.horizontalCenter
-//            visible:false
-//        }
     }
 }

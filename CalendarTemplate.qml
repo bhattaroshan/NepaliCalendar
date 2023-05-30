@@ -4,9 +4,10 @@ import QtQuick.Controls
 import QtQuick.Layouts
 
 Item {
-
-    property var currentMonth : ""
-
+    Layout.preferredHeight: parent.height
+    Layout.preferredWidth: parent.width
+    property string currentMonth : ""
+    property int currentDay : 1
     property int monthCounter : 0
     property var calendarNumbers : [
         "!","@","#","$","%","^","&","*","(","!)", //till 10
@@ -20,9 +21,8 @@ Item {
         "cfOt",";f]d","dªn​","a'w​","lalx​","z'qm​","zlg​"
     ]
 
-
-
-    Column{
+    ColumnLayout{
+        spacing: 0
         Rectangle{
             id:monthBar
             width: root.width
@@ -108,11 +108,13 @@ Item {
             }
         }
 
+
+
         GridView{
             interactive: false
             id:calendarGrid
             width:root.width
-            height:root.height
+            height:cellHeight*5
             cellWidth: root.width/7
             cellHeight: root.width/7
             model: 35
@@ -120,7 +122,19 @@ Item {
                 id: dateBox
                 width: calendarGrid.cellWidth
                 height: calendarGrid.cellHeight
-                color: (index+1)%7===0?"#fd7758":"white"
+                color: {
+                    var orangeColor = "#fd7758";
+                    var whiteColor = "white";
+                    var blueColor = "#969de0";
+                    var fColor = whiteColor;
+                    if(currentDay === index+1){
+                        fColor = blueColor;
+                    }else if((index+1)%7===0){
+                        fColor = orangeColor;
+                    }
+
+                    return fColor;
+                }
                 border.width: 1
                 border.color: "black"
 
@@ -133,6 +147,9 @@ Item {
                 }
 
             }
+        }
+        EventsTemplate{
+
         }
     }
 
