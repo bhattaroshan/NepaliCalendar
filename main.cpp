@@ -1,10 +1,13 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+#include "apimanager.h"
 
 
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
+
+    qmlRegisterType<ApiManager>("ApiManager",1,0,"ApiManager");
 
     QQmlApplicationEngine engine;
     const QUrl url(u"qrc:/NepaliCalendar/Main.qml"_qs);
