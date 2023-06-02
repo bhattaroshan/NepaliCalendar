@@ -5,6 +5,9 @@ import QtQuick.Layouts 1.3
 import ApiManager 1.0
 
 ApplicationWindow {
+    property bool isDataLoaded : false
+    property var monthData : []
+    property var startingDayData : []
 
     property var calendarMonths : [
         "a}zfv​","h]7​","c;/​",">fjg","ebf}","c;f]h","sflt{s​​","dlª\;/​","k';​","df3","kmn\\u'g​","r}q​"
@@ -25,15 +28,10 @@ ApplicationWindow {
 
     ApiManager{
         id:apiManager
-        onRequestCompleted: (response)=> {
-            //console.log("My response is = ",response);
-            yearInfo = JSON.parse(response);
-            //console.log(jsonString.year);
-            //console.log(response);
-//            for(let [key,value] of Object.entries(jsonString)){
-//                console.log(typeof key,value);
-//            }
-
+        onRequestCompleted: (response,months,startingDay)=> {
+                                monthData=months
+                                startingDayData = startingDay;
+                                isDataLoaded = true;
         }
     }
 
@@ -50,17 +48,9 @@ ApplicationWindow {
                 model: 12
                 delegate:
                     CalendarTemplate{
-                    currentMonth: calendarMonths[index]
-                    totalDays: {
-                        //console.log(yearInfo[String(index)]);
-                        if(yearInfo!==null){
-                            return yearInfo[String(index)];
-                        }else{
-                            return 0;
-                        }
-
-                    }
-
+                        currentMonth: calendarMonths[index]
+                        totalDays: isDataLoaded?monthData[index]:0
+                        startDay: isDataLoaded?startingDayData[index]:0
                 }
             }
 

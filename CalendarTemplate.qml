@@ -9,6 +9,7 @@ Item {
     Layout.preferredWidth: parent.width
     property string currentMonth : ""
     property int totalDays : 0
+    property int startDay : 0
 
     property int currentDay : 1
     property int monthCounter : 0
@@ -30,7 +31,7 @@ Item {
             //Layout.preferredWidth: root.width
             //Layout.preferredHeight: root.height/10
             width: root.width
-            height: root.height/10
+            height: root.height/12
             color:"#545d66"
 
             Text{
@@ -49,7 +50,6 @@ Item {
                 model:7
                 delegate:Rectangle{
                     width: {
-
                         if((index+1)%7!==0){
                             return Math.floor(root.width/7);
                         }else{
@@ -77,10 +77,10 @@ Item {
             interactive: false
             id:calendarGrid
             width:root.width
-            height:calendarGrid.cellHeight*5
+            height:calendarGrid.cellHeight*Math.ceil((startDay+totalDays)/7)
             cellWidth: Math.floor(root.width/7)
             cellHeight: Math.floor(root.width/7)
-            model:35
+            model:(startDay+totalDays)+(7-(startDay+totalDays)%7)
             delegate: Rectangle{
                 id: dateBox
                 width:{
@@ -103,7 +103,6 @@ Item {
                     }else if((index+1)%7===0){
                         fColor = orangeColor;
                     }
-
                     return fColor;
                 }
                 border.width: 1
@@ -111,10 +110,10 @@ Item {
 
                 Text{
                     text:{
-                        if(index+1>totalDays){
+                        if(index+1>(totalDays+startDay) || index<startDay){
                             return "";
                         }else{
-                             return calendarNumbers[index]
+                             return calendarNumbers[index-startDay]
                         }
                     }
                     font.family: aakritiFont.font.family
