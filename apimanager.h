@@ -14,6 +14,7 @@ class ApiManager:public QObject
     Q_PROPERTY(int currentDay READ currentDay NOTIFY dataChanged);
     Q_PROPERTY (QVector<int> totalMonthDays READ totalMonthDays NOTIFY dataChanged);
     Q_PROPERTY (QVector<int> startingDayOfMonth READ startingDayOfMonth NOTIFY dataChanged);
+
 public:
     ApiManager();
     void initializeDataHolder();
@@ -30,7 +31,6 @@ private:
     int m_currentDay;
     QVector<int> m_totalMonthDays;
     QVector<int> m_startingDayOfMonth;
-
 
 signals:
     void dataChanged();

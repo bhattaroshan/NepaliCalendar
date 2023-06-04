@@ -4,9 +4,6 @@ import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.3
 
 Item {
-
-    Layout.preferredHeight: parent.height
-    Layout.preferredWidth: parent.width
     property int currentMonthIndex : 0
     property int totalDays : 0
     property int startDay : 0
@@ -40,7 +37,8 @@ Item {
         }
         return res;
     }
-
+    width: root.width
+    height: root.height
     Column{
         Rectangle{
             id:monthBar
