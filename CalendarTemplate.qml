@@ -7,10 +7,12 @@ Item {
 
     Layout.preferredHeight: parent.height
     Layout.preferredWidth: parent.width
-    property string currentMonth : ""
+    property int currentMonthIndex : 0
     property int totalDays : 0
     property int startDay : 0
-
+    property int currentRunningYear : -1
+    property int currentRunningMonth : -1
+    property int currentRunningDay : -1
     property int currentDay : 1
     property int monthCounter : 0
     property var calendarNumbers : [
@@ -21,28 +23,53 @@ Item {
         "$!","$@","$#","$$","$%","$^","$&","$*","$(","%)", //till 50
     ]
 
+    property var calendarMonths : [
+        "a}zfv​","h]7​","c;/​",">fjg","ebf}","c;f]h","sflt{s​​","dlª\;/​","k';​","df3","kmn\\u'g​","r}q​"
+    ]
+
     property var calendarDays : [
         "cfOt",";f]d","dªn​","a'w​","lalx​","z'qm​","zlg​"
     ]
 
+    function convert(num){
+        var n = [")","!","@","#","$","%","^","&","*","("]
+        var s = num.toString()
+        var res = ""
+        for(var i=0;i<s.length;++i){
+            res += n[parseInt(s[i])]
+        }
+        return res;
+    }
+
     Column{
         Rectangle{
             id:monthBar
-            //Layout.preferredWidth: root.width
-            //Layout.preferredHeight: root.height/10
             width: root.width
             height: root.height/12
             color:"#545d66"
 
-            Text{
-                anchors.centerIn: parent
-                text: currentMonth
-                font.bold: true
-                font.pointSize: 40
-                color:"white"
-                font.family: aakritiFont.font.family
+            RowLayout{
+                width:parent.width
+                anchors.verticalCenter: parent.verticalCenter
+                spacing: 20
+                Text{
+                    text: calendarMonths[currentMonthIndex]
+                    font.bold: true
+                    font.pointSize: 40
+                    color:"white"
+                    font.family: aakritiFont.font.family
+                    Layout.fillWidth: true
+                    Layout.leftMargin: 30
+                }
+                Text{
+                    text:convert(currentRunningYear)
+                    font.bold: true
+                    font.pointSize: 40
+                    color: "white"
+                    font.family: aakritiFont.font.family
+                    Layout.rightMargin: 30
+                }
             }
-
         }
 
         Row{
@@ -98,7 +125,8 @@ Item {
                     var whiteColor = "white";
                     var blueColor = "#969de0";
                     var fColor = whiteColor;
-                    if(currentDay === index+1){
+                    if(currentRunningDay === index &&
+                       currentRunningMonth === currentMonthIndex){
                         fColor = blueColor;
                     }else if((index+1)%7===0){
                         fColor = orangeColor;
@@ -113,7 +141,7 @@ Item {
                         if(index+1>(totalDays+startDay) || index<startDay){
                             return "";
                         }else{
-                             return calendarNumbers[index-startDay]
+                            return calendarNumbers[index-startDay]
                         }
                     }
                     font.family: aakritiFont.font.family

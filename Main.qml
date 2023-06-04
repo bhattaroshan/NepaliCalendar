@@ -5,16 +5,6 @@ import QtQuick.Layouts 1.3
 import ApiManager 1.0
 
 ApplicationWindow {
-    property bool isDataLoaded : false
-    property var monthData : []
-    property var startingDayData : []
-
-    property var calendarMonths : [
-        "a}zfv​","h]7​","c;/​",">fjg","ebf}","c;f]h","sflt{s​​","dlª\;/​","k';​","df3","kmn\\u'g​","r}q​"
-    ]
-
-    property var yearInfo : null
-
     id:root
     width: 400
     height: 900
@@ -22,17 +12,11 @@ ApplicationWindow {
     title: qsTr("Nepali Calendar")
 
     Component.onCompleted: {
-        apiManager.sendSignal();
+        apiManager.sendSignal(0);
     }
-
 
     ApiManager{
         id:apiManager
-        onRequestCompleted: (response,months,startingDay)=> {
-                                monthData=months
-                                startingDayData = startingDay;
-                                isDataLoaded = true;
-        }
     }
 
     ColumnLayout{
@@ -40,7 +24,7 @@ ApplicationWindow {
         height:parent.height
         SwipeView{
             id: view
-            currentIndex: 0
+            currentIndex: apiManager.currentMonth
             Layout.preferredWidth: parent.width
             Layout.preferredHeight: parent.height
 
@@ -48,12 +32,15 @@ ApplicationWindow {
                 model: 12
                 delegate:
                     CalendarTemplate{
-                        currentMonth: calendarMonths[index]
-                        totalDays: isDataLoaded?monthData[index]:0
-                        startDay: isDataLoaded?startingDayData[index]:0
+                    currentMonthIndex: index
+                    totalDays: apiManager.totalMonthDays[index]
+                    startDay: apiManager.startingDayOfMonth[index]
+                    currentRunningDay: apiManager.currentDay
+                    currentRunningMonth: apiManager.currentMonth
+                    currentRunningYear: apiManager.currentYear
                 }
-            }
 
+            }
         }
     }
 }
