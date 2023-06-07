@@ -4,14 +4,18 @@ import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.3
 
 Item {
-    property int currentMonthIndex : 0
+    Component.onCompleted: {
+    }
+
+    property int runningIndex : 0
     property int totalDays : 0
     property int startDay : 0
     property int currentRunningYear : -1
     property int currentRunningMonth : -1
     property int currentRunningDay : -1
-    property int currentDay : 1
     property int monthCounter : 0
+    property int currentYear : 0
+    property int currentMonth : 0
     property var calendarNumbers : [
         "!","@","#","$","%","^","&","*","(","!)", //till 10
         "!!","!@","!#","!$","!%","!^","!&","!*","!(","@)", //till 20
@@ -51,7 +55,7 @@ Item {
                 anchors.verticalCenter: parent.verticalCenter
                 spacing: 20
                 Text{
-                    text: calendarMonths[currentMonthIndex]
+                    text: calendarMonths[currentMonth]
                     font.bold: true
                     font.pointSize: 40
                     color:"white"
@@ -60,7 +64,7 @@ Item {
                     Layout.leftMargin: 30
                 }
                 Text{
-                    text:convert(currentRunningYear)
+                    text:convert(currentYear)
                     font.bold: true
                     font.pointSize: 40
                     color: "white"
@@ -123,8 +127,9 @@ Item {
                     var whiteColor = "white";
                     var blueColor = "#969de0";
                     var fColor = whiteColor;
-                    if(currentRunningDay === index &&
-                       currentRunningMonth === currentMonthIndex){
+                    if(apiManager.currentDay === index-startDay+1 &&
+                       apiManager.currentMonth === apiManager.months[runningIndex] &&
+                       apiManager.currentYear === apiManager.years[runningIndex]){
                         fColor = blueColor;
                     }else if((index+1)%7===0){
                         fColor = orangeColor;
