@@ -76,6 +76,7 @@ ApplicationWindow {
         orientation: ListView.Horizontal
         snapMode: ListView.SnapOneItem
         highlightRangeMode: ListView.StrictlyEnforceRange
+        currentIndex: listView.model.count > 0 ? 6 : 0
         delegate: CalendarTemplate{
             runningIndex: index
             totalDays: model.totalDays
@@ -112,7 +113,6 @@ ApplicationWindow {
 
             lastMonthIndex = listView.currentIndex;
         }
-
     }
 
 }
