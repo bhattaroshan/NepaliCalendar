@@ -63,6 +63,9 @@ void ApiManager::handleReply(QNetworkReply *reply)
             int v = jsonDocument["months"][QString::number(i)].toInt();
             m_months[i] = v;
         }
+
+        m_jresponse = response;
+
         emit dataChanged();
     }
     else
@@ -96,6 +99,11 @@ QVector<int> ApiManager::years()
 QVector<int> ApiManager::months()
 {
     return m_months;
+}
+
+QString ApiManager::jresponse()
+{
+    return m_jresponse;
 }
 
 QVector<int> ApiManager::totalMonthDays()

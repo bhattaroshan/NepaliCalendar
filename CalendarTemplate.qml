@@ -5,8 +5,10 @@ import QtQuick.Layouts 1.3
 
 Item {
     Component.onCompleted: {
+        var events = JSON.parse(apiManager.jresponse)["events"];
+        currentEvents = events[apiManager.months[runningIndex]];
     }
-
+    property var currentEvents : null
     property int runningIndex : 0
     property int totalDays : 0
     property int startDay : 0
@@ -23,6 +25,25 @@ Item {
         "#!","#@","##","#$","#%","#^","#&","#*","#(","$)", //till 40
         "$!","$@","$#","$$","$%","$^","$&","$*","$(","%)", //till 50
     ]
+
+    property var tithiMaps : {
+        "Ekadashi":"PsbzL",
+        "Dwadashi":"åfbzL",
+        "Trayodashi":"qof]bzL",
+        "Chaturdashi":"rt'y{L",
+        "Aaunshi":"cf}+;L",
+        "Pratipada":"k|ltkbf",
+        "Ditiya":"lblto",
+        "Tritiya":"t[ltof",
+        "Chaturthi":"rt'y{L",
+        "Panchami":"k~rdL",
+        "Sasthi":";i7L",
+        "Saptami":";KtdL",
+        "Aastami":"ci6dL",
+        "Nawami":"gjdL",
+        "Dashami":"bzdL",
+        "Purnima":"k\"l0f{df"
+    }
 
     property var calendarMonths : [
         "a}zfv​","h]7​","c;/​",">fjg","ebf}","c;f]h","sflt{s​​","dlª\;/​","k';​","df3","kmn\\u'g​","r}q​"
@@ -111,6 +132,9 @@ Item {
             cellHeight: Math.floor(root.width/7)
             model:(startDay+totalDays)+(7-(startDay+totalDays)%7)
             delegate: Rectangle{
+                property int currentHolidayCheck : 0
+                property string currentTithi : ""
+
                 id: dateBox
                 width:{
                     if((index+1)%7!==0){
@@ -123,23 +147,50 @@ Item {
 
                 height: calendarGrid.cellHeight
                 color: {
+                    if(currentEvents!==null){
+                        currentHolidayCheck = parseInt(currentEvents[index-startDay]?.holiday);
+                    }
+
                     var orangeColor = "#fd7758";
                     var whiteColor = "white";
                     var blueColor = "#969de0";
                     var fColor = whiteColor;
                     if(apiManager.currentDay === index-startDay+1 &&
-                       apiManager.currentMonth === apiManager.months[runningIndex] &&
-                       apiManager.currentYear === apiManager.years[runningIndex]){
+                            apiManager.currentMonth === apiManager.months[runningIndex] &&
+                            apiManager.currentYear === apiManager.years[runningIndex]){
                         fColor = blueColor;
-                    }else if((index+1)%7===0){
+                    }else if((index+1)%7===0 || currentHolidayCheck===1){
                         fColor = orangeColor;
                     }
                     return fColor;
                 }
                 border.width: 1
                 border.color: "black"
+                Text{
+                    text:{
+                        if(currentEvents!==null){
+                            currentTithi = currentEvents[index-startDay]?.tithi?currentEvents[index-startDay]?.tithi:"";
+                        }
+
+                       return tithiMaps[currentTithi]?tithiMaps[currentTithi]:"";
+                    }
+                    Layout.alignment: Qt.AlignRight|Qt.AlignTop
+                    font.family: aakritiFont.font.family
+                    font.pointSize: 12
+                    anchors.right: parent.right
+                    anchors.top: parent.top
+                    anchors.rightMargin: 3
+                    anchors.topMargin: 3
+                    color: {
+                        if(currentEvents!==null){
+                            currentHolidayCheck = parseInt(currentEvents[index-startDay]?.holiday);
+                        }
+                        return (index+1)%7==0 || currentHolidayCheck===1?"white":"grey";
+                    }
+                }
 
                 Text{
+                    anchors.centerIn:parent
                     text:{
                         if(index+1>(totalDays+startDay) || index<startDay){
                             return "";
@@ -149,10 +200,13 @@ Item {
                     }
                     font.family: aakritiFont.font.family
                     font.pointSize: 25
-                    color: (index+1)%7===0?"white":"black"
-                    anchors.centerIn: dateBox
+                    color: {
+                        if(currentEvents!==null){
+                            currentHolidayCheck = parseInt(currentEvents[index-startDay]?.holiday);
+                        }
+                        return (index+1)%7===0 || currentHolidayCheck===1?"white":"black"
+                    }
                 }
-
             }
         }
 
