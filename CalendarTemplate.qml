@@ -4,6 +4,14 @@ import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.3
 
 Item {
+    property string holidayTextColor : "#f95d94"
+    property string saturdayBoxColor : "#f9825d"
+    property string saturdayTextColor : "white"
+    property string normalTextColor : "black"
+    property string normalBoxColor : "white"
+    property string tithiTextColor : "grey"
+    property string currentDayBoxColor : "#969de0";
+
     Component.onCompleted: {
         var events = JSON.parse(apiManager.jresponse)["events"];
         currentEvents = events[apiManager.months[runningIndex]];
@@ -151,16 +159,13 @@ Item {
                         currentHolidayCheck = parseInt(currentEvents[index-startDay]?.holiday);
                     }
 
-                    var orangeColor = "#fd7758";
-                    var whiteColor = "white";
-                    var blueColor = "#969de0";
-                    var fColor = whiteColor;
+                    var fColor = normalBoxColor;
                     if(apiManager.currentDay === index-startDay+1 &&
                             apiManager.currentMonth === apiManager.months[runningIndex] &&
                             apiManager.currentYear === apiManager.years[runningIndex]){
-                        fColor = blueColor;
-                    }else if((index+1)%7===0 || currentHolidayCheck===1){
-                        fColor = orangeColor;
+                        fColor = currentDayBoxColor;
+                    }else if((index+1)%7===0){
+                        fColor = saturdayBoxColor;
                     }
                     return fColor;
                 }
@@ -185,7 +190,14 @@ Item {
                         if(currentEvents!==null){
                             currentHolidayCheck = parseInt(currentEvents[index-startDay]?.holiday);
                         }
-                        return (index+1)%7==0 || currentHolidayCheck===1?"white":"grey";
+                        var c = tithiTextColor
+                        if((index+1)%7===0){
+                            c = normalBoxColor
+                        }else if(currentHolidayCheck===1){
+                            c = holidayTextColor
+                        }
+
+                        return c;
                     }
                 }
 
@@ -204,7 +216,15 @@ Item {
                         if(currentEvents!==null){
                             currentHolidayCheck = parseInt(currentEvents[index-startDay]?.holiday);
                         }
-                        return (index+1)%7===0 || currentHolidayCheck===1?"white":"black"
+
+                        var c = normalTextColor
+                        if((index+1)%7===0){
+                            c = saturdayTextColor
+                        }else if(currentHolidayCheck===1){
+                            c = holidayTextColor
+                        }
+
+                        return c;
                     }
                 }
             }
