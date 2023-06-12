@@ -35,6 +35,8 @@ ApplicationWindow {
                         startDay: apiManager.startingDayOfMonth[i],
                         currentYear: apiManager.years[i],
                         currentMonth: apiManager.months[i],
+                        currentHoliday: apiManager.holiday[i],
+                        currentTithi: apiManager.tithi[i],
                         currentRunningDay: apiManager.currentDay,
                         currentRunningMonth: apiManager.currentMonth,
                         currentRunningYear: apiManager.currentYear
@@ -52,6 +54,8 @@ ApplicationWindow {
                         startDay: apiManager.startingDayOfMonth[j],
                         currentYear: apiManager.years[j],
                         currentMonth: apiManager.months[j],
+                        currentHoliday: apiManager.holiday[j],
+                        currentTithi: apiManager.tithi[j],
                         currentRunningDay: apiManager.currentDay,
                         currentRunningMonth: apiManager.currentMonth,
                         currentRunningYear: apiManager.currentYear
@@ -83,6 +87,8 @@ ApplicationWindow {
             startDay: model.startDay
             currentYear: model.currentYear
             currentMonth: model.currentMonth
+            currentHoliday: model.currentHoliday
+            currentTithi: model.currentTithi
             currentRunningDay: model.currentRunningDay
             currentRunningMonth: model.currentRunningMonth
             currentRunningYear: model.currentRunningYear

@@ -1,5 +1,7 @@
 #include "apimanager.h"
 #include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonArray>
 
 ApiManager::ApiManager()
 {
@@ -8,6 +10,8 @@ ApiManager::ApiManager()
 
 void ApiManager::initializeDataHolder()
 {
+    m_holiday.clear();
+    m_tithi.clear();
     m_totalMonthDays.resize(12);
     m_totalMonthDays.fill(0);
     m_startingDayOfMonth.resize(12);
@@ -28,6 +32,7 @@ void ApiManager::sendSignal(const QString y,const QString m)
     initializeDataHolder();
     //QNetworkRequest request(QUrl("http://192.168.0.104:8001/1992"));
     QNetworkRequest request(QUrl("http://localhost:8001/"+y+"/"+m));
+    //QNetworkRequest request(QUrl("http://192.168.10.69:8001/"+y+"/"+m));
     //QNetworkRequest request(QUrl("http://192.168.10.80:8001/"+s));
     QNetworkAccessManager *m_networkManager = new QNetworkAccessManager(this);
     m_networkManager->get(request);
@@ -64,6 +69,23 @@ void ApiManager::handleReply(QNetworkReply *reply)
             m_months[i] = v;
         }
 
+        //QJsonObject obj = jsonDocument.object();
+        for(int i=0;i<12;++i){
+            QJsonArray eventsArr =jsonDocument["events"][QString::number(i)].toArray();
+            QVector<int> t_holiday;
+            QVector<QString> t_tithi;
+            for(int j=0;j<eventsArr.size();++j){
+                //int day = eventsArr[j].toObject().value("day").toInt();
+                int holiday = eventsArr[j].toObject().value("holiday").toInt();
+                QString str = eventsArr[j].toObject().value("tithi").toString();
+                //QString tithi = eventsArr[j].toObject().value("tithi").toString();
+                t_holiday.push_back(holiday);
+                t_tithi.push_back(str);
+            }
+            m_holiday.push_back(t_holiday);
+            m_tithi.push_back(t_tithi);
+        }
+
         m_jresponse = response;
 
         emit dataChanged();
@@ -89,6 +111,16 @@ int ApiManager::currentMonth()
 int ApiManager::currentDay()
 {
     return m_currentDay;
+}
+
+QVector<QVector<int> > ApiManager::holiday()
+{
+    return m_holiday;
+}
+
+QVector<QVector<QString> > ApiManager::tithi()
+{
+    return m_tithi;
 }
 
 QVector<int> ApiManager::years()

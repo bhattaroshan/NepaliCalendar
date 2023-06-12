@@ -17,6 +17,8 @@ class ApiManager:public QObject
     Q_PROPERTY(QVector<int> years READ years NOTIFY dataChanged);
     Q_PROPERTY(QVector<int> months READ months NOTIFY dataChanged);
     Q_PROPERTY(QString jresponse READ jresponse NOTIFY dataChanged);
+    Q_PROPERTY(QVector<QVector<int>> holiday READ holiday NOTIFY dataChanged);
+    Q_PROPERTY(QVector<QVector<QString>> tithi READ tithi NOTIFY dataChanged);
 
 public:
     ApiManager();
@@ -25,6 +27,8 @@ public:
     int currentYear();
     int currentMonth();
     int currentDay();
+    QVector<QVector<int>> holiday();
+    QVector<QVector<QString>> tithi();
     QVector<int> years();
     QVector<int> months();
     QString jresponse();
@@ -40,6 +44,8 @@ private:
     QVector<int> m_years;
     QVector<int> m_months;
     QString m_jresponse;
+    QVector<QVector<int>> m_holiday;
+    QVector<QVector<QString>> m_tithi;
 
 signals:
     void dataChanged();

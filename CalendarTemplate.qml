@@ -26,6 +26,11 @@ Item {
     property int monthCounter : 0
     property int currentYear : 0
     property int currentMonth : 0
+    property var currentHoliday : null
+    property var currentTithi : null
+
+
+
     property var calendarNumbers : [
         "!","@","#","$","%","^","&","*","(","!)", //till 10
         "!!","!@","!#","!$","!%","!^","!&","!*","!(","@)", //till 20
@@ -140,8 +145,6 @@ Item {
             cellHeight: Math.floor(root.width/7)
             model:(startDay+totalDays)+(7-(startDay+totalDays)%7)
             delegate: Rectangle{
-                property int currentHolidayCheck : 0
-                property string currentTithi : ""
 
                 id: dateBox
                 width:{
@@ -155,14 +158,10 @@ Item {
 
                 height: calendarGrid.cellHeight
                 color: {
-                    if(currentEvents!==null){
-                        currentHolidayCheck = parseInt(currentEvents[index-startDay]?.holiday);
-                    }
 
                     var fColor = normalBoxColor;
-                    if(apiManager.currentDay === index-startDay+1 &&
-                            apiManager.currentMonth === apiManager.months[runningIndex] &&
-                            apiManager.currentYear === apiManager.years[runningIndex]){
+                    if(currentRunningDay === index-startDay+1 && currentRunningMonth === currentMonth &&
+                            currentRunningYear === currentYear){
                         fColor = currentDayBoxColor;
                     }else if((index+1)%7===0){
                         fColor = saturdayBoxColor;
@@ -173,11 +172,8 @@ Item {
                 border.color: "black"
                 Text{
                     text:{
-                        if(currentEvents!==null){
-                            currentTithi = currentEvents[index-startDay]?.tithi?currentEvents[index-startDay]?.tithi:"";
-                        }
-
-                       return tithiMaps[currentTithi]?tithiMaps[currentTithi]:"";
+                        var cT = currentTithi[index-startDay];
+                        return tithiMaps[cT]?tithiMaps[cT]:"";
                     }
                     Layout.alignment: Qt.AlignRight|Qt.AlignTop
                     font.family: aakritiFont.font.family
@@ -187,13 +183,10 @@ Item {
                     anchors.rightMargin: 3
                     anchors.topMargin: 3
                     color: {
-                        if(currentEvents!==null){
-                            currentHolidayCheck = parseInt(currentEvents[index-startDay]?.holiday);
-                        }
                         var c = tithiTextColor
                         if((index+1)%7===0){
                             c = normalBoxColor
-                        }else if(currentHolidayCheck===1){
+                        }else if(currentHoliday && currentHoliday[index-startDay]===1){
                             c = holidayTextColor
                         }
 
@@ -213,15 +206,13 @@ Item {
                     font.family: aakritiFont.font.family
                     font.pointSize: 25
                     color: {
-                        if(currentEvents!==null){
-                            currentHolidayCheck = parseInt(currentEvents[index-startDay]?.holiday);
-                        }
 
                         var c = normalTextColor
                         if((index+1)%7===0){
-                            c = saturdayTextColor
-                        }else if(currentHolidayCheck===1){
-                            c = holidayTextColor
+                            c = saturdayTextColor;
+                        }
+                        else if(currentHoliday && currentHoliday[index-startDay]===1){
+                            c = holidayTextColor;
                         }
 
                         return c;
