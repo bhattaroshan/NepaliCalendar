@@ -31,8 +31,8 @@ void ApiManager::sendSignal(const QString y,const QString m)
 {
     initializeDataHolder();
     //QNetworkRequest request(QUrl("http://192.168.0.104:8001/1992"));
-    QNetworkRequest request(QUrl("http://localhost:8001/"+y+"/"+m));
-    //QNetworkRequest request(QUrl("http://192.168.10.69:8001/"+y+"/"+m));
+    //QNetworkRequest request(QUrl("http://localhost:8001/"+y+"/"+m));
+    QNetworkRequest request(QUrl("http://192.168.0.103:8001/"+y+"/"+m));
     //QNetworkRequest request(QUrl("http://192.168.10.80:8001/"+s));
     QNetworkAccessManager *m_networkManager = new QNetworkAccessManager(this);
     m_networkManager->get(request);

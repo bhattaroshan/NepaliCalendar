@@ -46,7 +46,6 @@ ApplicationWindow {
                 while(listView.model.count>12){
                     listView.model.remove(0);
                 }
-                ex = false;
             }else{
                 for(var j=6;j>=0;--j){
                     var p = {
@@ -80,7 +79,11 @@ ApplicationWindow {
         orientation: ListView.Horizontal
         snapMode: ListView.SnapOneItem
         highlightRangeMode: ListView.StrictlyEnforceRange
-        currentIndex: listView.model.count > 0 ? 6 : 0
+        currentIndex: {
+            console.log("current Index called");
+//            return listView.model.count>0 && ex===true? 6 : 0
+            return listView.model.count>0 && 6;
+        }
         delegate: CalendarTemplate{
             runningIndex: index
             totalDays: model.totalDays
@@ -95,6 +98,10 @@ ApplicationWindow {
         }
 
         onMovementStarted: {
+            if(ex===true){
+                ex = false;
+            }
+
             if(listView.currentIndex<=3 && lastMonthIndex>=listView.currentIndex){
                 addAtLast = false;
                 var nyear = apiManager.years[0];

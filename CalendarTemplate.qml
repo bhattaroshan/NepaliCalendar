@@ -172,7 +172,7 @@ Item {
                 border.color: "black"
                 Text{
                     text:{
-                        var cT = currentTithi[index-startDay];
+                        var cT = index-startDay>=0?currentTithi[index-startDay]:"";
                         return tithiMaps[cT]?tithiMaps[cT]:"";
                     }
                     Layout.alignment: Qt.AlignRight|Qt.AlignTop
